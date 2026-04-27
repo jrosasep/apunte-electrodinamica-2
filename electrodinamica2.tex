@@ -15,7 +15,7 @@
 \usepackage{braket}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{microtype}
+% \usepackage{microtype} % desactivado para evitar advertencias de compatibilidad en Overleaf
 \usepackage{tikz}
 \usepackage{enumitem}
 \usepackage{array}
@@ -30,9 +30,20 @@
 \usepackage{tcolorbox}
 \tcbuselibrary{breakable,skins}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning,shapes.geometric}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+
+
+% Estilos TikZ usados en figuras didácticas del apunte
+\tikzset{
+    eje/.style={-{Latex[length=2.2mm,width=1.5mm]}, thick, gray!70!black},
+    vecazul/.style={-{Latex[length=2.8mm,width=1.8mm]}, very thick, UdeCAzul},
+    vecdorado/.style={-{Latex[length=2.8mm,width=1.8mm]}, very thick, UdeCDorado},
+    vecverde/.style={-{Latex[length=2.8mm,width=1.8mm]}, very thick, green!50!black},
+    frente/.style={fill=UdeCAzul!7, draw=UdeCAzul!75!black, thick},
+    cajadiagrama/.style={rounded corners=2mm, draw=UdeCAzul!45, fill=UdeCAzul!5, inner sep=4pt, align=center}
+}
 
 % =========================
 %       PALETA VISUAL
@@ -254,6 +265,40 @@ La ecuación de continuidad de la carga es, entonces, un caso particular de esta
 \end{equation*}
 Con ello se recupera inmediatamente \eqref{eq:continuidad-local-carga}. Desde este punto de vista, la continuidad de la carga no es una ecuación aislada, sino la formulación electromagnética de un principio general de conservación local.
 
+
+\begin{figure}[ht]
+    \centering
+    \begingroup
+    \shorthandoff{<>}
+    \begin{tikzpicture}[scale=0.98,>=Latex,line join=round,line cap=round]
+        \fill[UdeCAzul!5] (-2.35,-0.92) .. controls (-2.75,0.15) and (-1.60,1.28) .. (-0.45,1.34)
+            .. controls (0.85,1.48) and (2.40,0.84) .. (2.55,-0.16)
+            .. controls (2.76,-1.27) and (1.02,-1.55) .. (-0.30,-1.45)
+            .. controls (-1.25,-1.38) and (-2.05,-1.47) .. (-2.35,-0.92) -- cycle;
+        \draw[UdeCAzul!75!black,thick] (-2.35,-0.92) .. controls (-2.75,0.15) and (-1.60,1.28) .. (-0.45,1.34)
+            .. controls (0.85,1.48) and (2.40,0.84) .. (2.55,-0.16)
+            .. controls (2.76,-1.27) and (1.02,-1.55) .. (-0.30,-1.45)
+            .. controls (-1.25,-1.38) and (-2.05,-1.47) .. (-2.35,-0.92) -- cycle;
+        \node[UdeCAzul!85!black] at (-0.12,0.24) {$V$};
+        \node[font=\small,align=center] at (-0.10,-0.33) {$\rho(\vec x,t)$\\carga contenida};
+        \draw[vecdorado] (2.35,0.20) -- (3.35,0.66);
+        \node[font=\small,UdeCDorado!85!black,anchor=west] at (3.55,0.72) {$\vec J\cdot \hat n>0$};
+        \draw[vecdorado] (-2.28,0.46) -- (-3.25,0.74);
+        \node[font=\small,UdeCDorado!85!black,anchor=east] at (-3.45,0.80) {$\vec J\cdot \hat n>0$};
+        \draw[eje] (2.55,0.13) -- (3.07,-0.18);
+        \node[font=\small,anchor=west] at (3.20,-0.20) {$\hat n$};
+        \draw[vecverde] (0.85,-2.02) -- (0.35,-1.48);
+        \node[font=\small,green!45!black,anchor=west,fill=white,inner sep=1pt] at (1.25,-1.80) {$\vec J\cdot \hat n<0$};
+        \node[cajadiagrama, text width=6.4cm] at (0,-3.05)
+        {$\displaystyle \frac{\partial \rho}{\partial t}+\vec\nabla\cdot\vec J=0$\\[2pt]
+        variación local $+$ flujo saliente $=0$};
+    \end{tikzpicture}
+    \endgroup
+    \caption{Lectura local de la ecuación de continuidad. La carga dentro de un volumen cambia sólo si existe flujo neto de corriente a través de su frontera.}
+    \label{fig:continuidad-carga-volumen}
+\end{figure}
+
+
 \begin{cuidado}
 La ecuación de continuidad no afirma que la carga en un volumen fijo permanezca constante en todo instante. Afirma, más precisamente, que cualquier variación de dicha carga debe explicarse por un flujo de corriente a través de la frontera del volumen considerado.
 \end{cuidado}
@@ -324,6 +369,39 @@ Sustituyendo \eqref{eq:def-X} en \eqref{eq:ampere-con-X}, obtenemos finalmente
 \end{equation*}
 Esta es la ley de Ampère-Maxwell. La llamada \textit{corriente de desplazamiento} queda así determinada por la exigencia de compatibilidad entre la ley de Gauss y la conservación local de la carga.
 
+
+\begin{figure}[ht]
+    \centering
+    \begingroup
+    \shorthandoff{<>}
+    \begin{tikzpicture}[>=Latex, line join=round, line cap=round]
+        \node[cajadiagrama, text width=4.25cm] (amp) at (0,0)
+        {ley magnetostática\\[-1pt]
+        $\vec\nabla\times\B=\mu_0\J$};
+        \node[cajadiagrama, text width=4.85cm] (cont) at (7.0,0)
+        {continuidad de la carga\\[-1pt]
+        $\partial_t\rho+\vec\nabla\cdot\J=0$};
+        \node[cajadiagrama, text width=4.55cm] (gauss) at (7.0,-2.35)
+        {ley de Gauss\\[-1pt]
+        $\vec\nabla\cdot\E=\rho/\varepsilon_0$};
+        \node[cajadiagrama, text width=4.9cm] (max) at (0,-2.35)
+        {corrección dinámica\\[-1pt]
+        $\vec X=\mu_0\varepsilon_0\,\partial_t\E$};
+        \node[cajadiagrama, text width=6.45cm, fill=UdeCDorado!8, draw=UdeCDorado!80!black] (final) at (3.50,-4.70)
+        {$\displaystyle \vec\nabla\times\B=\mu_0\J+\mu_0\varepsilon_0\frac{\partial\E}{\partial t}$\\
+        ley de Amp\`ere-Maxwell};
+        \draw[vecazul] (amp.east) -- node[above=5pt,font=\scriptsize,fill=white,inner sep=1.2pt] {divergencia} (cont.west);
+        \draw[vecazul] (cont.south) -- node[right=5pt,font=\scriptsize,fill=white,inner sep=1.2pt] {usa $\rho$} (gauss.north);
+        \draw[vecazul] (gauss.west) -- node[below=5pt,font=\scriptsize,fill=white,inner sep=1.2pt] {$\partial_t$} (max.east);
+        \draw[vecdorado] (max.south east) -- ++(0.90,-0.75) -- (final.north west);
+        \draw[vecdorado] (amp.south west) -- ++(-1.15,-0.75) -- ++(0,-3.25) -- (final.west);
+    \end{tikzpicture}
+    \endgroup
+    \caption{La corriente de desplazamiento aparece al exigir que la ley de Ampère sea compatible con la conservación local de la carga y con la ley de Gauss.}
+    \label{fig:ampere-maxwell-consistencia}
+\end{figure}
+
+
 \subsection{Ecuaciones de Maxwell en el vacío}
 
 \textbf{Las ecuaciones de Maxwell constituyen el núcleo local de la electrodinámica clásica}. A partir de ellas se organizan tanto la dinámica de los campos como la propagación de ondas electromagnéticas.
@@ -352,8 +430,8 @@ Conviene subrayar el siguiente punto: la ecuación de continuidad \eqref{eq:cont
 
 Las ecuaciones de Maxwell constituyen un sistema de $8$ ecuaciones escalares para las $6$ componentes escalares de los campos $\E$ y $\B$. En coordenadas cartesianas,
 \begin{align*}
-    \E(\vec x, t) &= E_x\,\hat x + E_y \, \hat y + E_z \,\hat z,\\
-    \B(\vec x, t) &= B_x\,\hat x + B_y \, \hat y + B_z \,\hat z.
+    \E(\vec x, t) &= E_x\,\hat e_x + E_y \, \hat e_y + E_z \,\hat e_z,\\
+    \B(\vec x, t) &= B_x\,\hat e_x + B_y \, \hat e_y + B_z \,\hat e_z.
 \end{align*}
 Entonces, por ejemplo,
 \begin{equation*}
@@ -368,9 +446,9 @@ es otra ecuación escalar.
 En cambio, cada rotor entrega tres ecuaciones escalares. En efecto,
 \begin{equation*}
     \vec\nabla\times\E=
-    \left(\frac{\partial E_z}{\partial y}-\frac{\partial E_y}{\partial z}\right)\hat x+
-    \left(\frac{\partial E_x}{\partial z}-\frac{\partial E_z}{\partial x}\right)\hat y+
-    \left(\frac{\partial E_y}{\partial x}-\frac{\partial E_x}{\partial y}\right)\hat z,
+    \left(\frac{\partial E_z}{\partial y}-\frac{\partial E_y}{\partial z}\right)\hat e_x+
+    \left(\frac{\partial E_x}{\partial z}-\frac{\partial E_z}{\partial x}\right)\hat e_y+
+    \left(\frac{\partial E_y}{\partial x}-\frac{\partial E_x}{\partial y}\right)\hat e_z,
 \end{equation*}
 de modo que la ley de Faraday \eqref{eq:maxwell-faraday} equivale a las tres ecuaciones
 \begin{align*}
@@ -406,6 +484,8 @@ donde $\J$ es la densidad volumétrica de corriente eléctrica, $\rho$ es la den
     \label{eq:conmutacion-rotor-tiempo}
 \end{equation}
 No se trata de independencia temporal del campo, sino de la conmutación de derivadas parciales bajo hipótesis de regularidad adecuadas.
+
+\newpage
 
 \section{Ecuaciones de onda electromagnéticas en el vacío}
 
@@ -595,116 +675,57 @@ y, por tanto,
     \lambda=\frac{2\pi}{k}.
 \end{equation*}
 
+
+
 \begin{figure}[ht]
     \centering
     \begingroup
     \shorthandoff{<>}
-    \begin{tikzpicture}[
-        scale=1.08,
-        >=Latex,
-        line join=round,
-        line cap=round
-    ]
-        %------------------------------------------------
-        % Parámetros geométricos
-        %------------------------------------------------
-        \def\theta{-18}      % dirección de propagación
-        \def\L{2.75}         % longitud visible del frente
-        \def\d{2.10}         % "profundidad" para dar aspecto de superficie
-        \def\sep{3.80}       % avance del frente en dirección k
-
-        %------------------------------------------------
-        % Primer frente de fase
-        %------------------------------------------------
-        \coordinate (A) at (0,0);
-        \coordinate (B) at ($ (A)+({\theta+90}:\L) $);
-        \coordinate (D) at ($ (A)+(8:\d) $);
-        \coordinate (C) at ($ (B)+(8:\d) $);
-
-        %------------------------------------------------
-        % Segundo frente de fase (mismo frente en t + Delta t)
-        %------------------------------------------------
-        \coordinate (s) at ({\theta}:\sep);
-        \coordinate (A2) at ($ (A)+(s) $);
-        \coordinate (B2) at ($ (B)+(s) $);
-        \coordinate (C2) at ($ (C)+(s) $);
-        \coordinate (D2) at ($ (D)+(s) $);
-
-        %------------------------------------------------
-        % Centros geométricos de los frentes
-        %------------------------------------------------
-        \coordinate (O1) at ($ (A)!0.5!(C) $);
-        \coordinate (O2) at ($ (A2)!0.5!(C2) $);
-
-        %------------------------------------------------
-        % Frentes de onda
-        %------------------------------------------------
-        \fill[blue!7] (A)--(B)--(C)--(D)--cycle;
-        \fill[blue!7] (A2)--(B2)--(C2)--(D2)--cycle;
-
-        \draw[thick,blue!70!black] (A)--(B)--(C)--(D)--cycle;
-        \draw[thick,blue!70!black] (A2)--(B2)--(C2)--(D2)--cycle;
-
-        % Bordes "activos" del frente para enfatizar la fase
-        \draw[very thick,blue!85!black] (A)--(B);
-        \draw[very thick,blue!85!black] (A2)--(B2);
-
-        %------------------------------------------------
-        % Vector de propagación
-        %------------------------------------------------
-        \draw[very thick,-{Latex[length=4mm,width=2.6mm]},blue!85!black]
-            (O1) -- (O2)
-            node[midway,above=3pt,sloped] {$\vec k$};
-
-        %------------------------------------------------
-        % Etiquetas temporales
-        %------------------------------------------------
-        \node[font=\small,above left=2pt] at (B) {$t$};
-        \node[font=\small,above left=2pt] at (B2) {$t+\Delta t$};
-
-        %------------------------------------------------
-        % Condición de fase constante
-        %------------------------------------------------
-        \node[
-            font=\small\itshape,
-            align=center
-        ] at ($ (O1)!0.5!(O2)+(0,1.85) $)
-        {$\vec k\cdot\vec x-\omega t+\phi_0=\mathrm{cte}$};
-
-        %------------------------------------------------
-        % Distancia recorrida por el mismo frente
-        %------------------------------------------------
-        \coordinate (P1) at ($ (O1)+({\theta-90}:1.15) $);
-        \coordinate (P2) at ($ (O2)+({\theta-90}:1.15) $);
-
-        % pequeñas líneas auxiliares
-        \draw[dashed,gray!65] (O1) -- (P1);
-        \draw[dashed,gray!65] (O2) -- (P2);
-
-        \draw[<->,gray!75!black] (P1) -- (P2)
-            node[midway,below=2pt,sloped] {$\Delta x$};
-
-        \node[
-            font=\small,
-            align=center
-        ] at ($ (P1)!0.5!(P2)+(0,-0.62) $)
-        {avance del mismo frente\\ de fase};
-
-        %------------------------------------------------
-        % Velocidad de fase
-        %------------------------------------------------
-        \node[
-            font=\footnotesize,
-            align=left,
-            gray!70!black
-        ] at ($ (C2)+(1.00,0.25) $)
-        {$v_f=\dfrac{\Delta x}{\Delta t}$};
-
+    \begin{tikzpicture}[scale=1.0,>=Latex,line join=round,line cap=round]
+        \def\ang{-16}
+        \def\h{2.15}
+        \def\w{1.15}
+        \def\sep{3.75}
+        \coordinate (S) at ({\ang}:\sep);
+        \begin{scope}[shift={(-0.25,-0.10)}]
+            \coordinate (A) at ({\ang+90}:\h);
+            \coordinate (B) at ({\ang-90}:\h);
+            \coordinate (C) at ($ (B)+(10:\w) $);
+            \coordinate (D) at ($ (A)+(10:\w) $);
+            \fill[UdeCAzul!8] (A)--(B)--(C)--(D)--cycle;
+            \draw[very thick,UdeCAzul!80!black] (A)--(B)--(C)--(D)--cycle;
+            \node[font=\small,UdeCAzul!80!black,fill=white,inner sep=1pt] at ($ (A)!0.5!(D)+(0,0.35) $) {$t$};
+        \end{scope}
+        \begin{scope}[shift={($ (S)+(-0.25,-0.10) $)}]
+            \coordinate (A) at ({\ang+90}:\h);
+            \coordinate (B) at ({\ang-90}:\h);
+            \coordinate (C) at ($ (B)+(10:\w) $);
+            \coordinate (D) at ($ (A)+(10:\w) $);
+            \fill[UdeCDorado!10] (A)--(B)--(C)--(D)--cycle;
+            \draw[very thick,UdeCDorado!85!black] (A)--(B)--(C)--(D)--cycle;
+            \node[font=\small,UdeCDorado!85!black,fill=white,inner sep=1pt] at ($ (A)!0.5!(D)+(0,0.35) $) {$t+\Delta t$};
+        \end{scope}
+        \coordinate (C1) at (0.35,0.15);
+        \coordinate (C2) at ($ (C1)+(S) $);
+        \draw[vecazul] (C1) -- (C2) node[midway,above=6pt,sloped,fill=white,inner sep=1pt] {$\vec k$};
+        \coordinate (Q1) at ($ (C1)+({\ang-90}:1.18) $);
+        \coordinate (Q2) at ($ (C2)+({\ang-90}:1.18) $);
+        \draw[dashed,gray!55] (C1)--(Q1);
+        \draw[dashed,gray!55] (C2)--(Q2);
+        \draw[<->,gray!75!black] (Q1)--(Q2) node[midway,below=5pt,sloped,fill=white,inner sep=1pt] {$\Delta x$};
+        \node[cajadiagrama, text width=6.2cm] at (2.35,3.0)
+        {$\Phi(\vec x,t)=\vec k\cdot\vec x-\omega t+\varphi_0$\\
+        un frente de onda cumple $\Phi=\mathrm{cte}$};
+        \node[font=\small,align=center,gray!70!black,fill=white,inner sep=2pt] at (2.25,-3.75)
+        {seguir el mismo valor de fase implica\\$k\Delta x=\omega\Delta t$};
     \end{tikzpicture}
     \endgroup
-    \caption{Desplazamiento de una superficie de fase constante de una onda plana monocromática. Entre los instantes $t$ y $t+\Delta t$, el mismo frente de fase avanza una distancia $\Delta x$ en la dirección de propagación dada por $\vec k$. Esto permite identificar la velocidad de fase como $v_f=\Delta x/\Delta t$.}
+    \caption{Desplazamiento de una superficie de fase constante de una onda plana monocromática. La figura separa el objeto geométrico ---el frente de fase--- de la dirección de propagación fijada por $\vec k$.}
     \label{fig:avance-frente-fase}
 \end{figure}
+
+
+
 
 Si ahora seguimos un punto de fase constante en la dirección de propagación, entonces
 \begin{equation*}
@@ -721,146 +742,79 @@ y, por tanto, la velocidad de fase resulta ser
 
 En una onda electromagnética, la \textbf{polarización} queda determinada por la dirección en que oscila el campo eléctrico. En particular, si el campo eléctrico oscila siempre paralelo a un mismo vector constante $\vec E_0$, entonces la onda está \textbf{linealmente polarizada}. Lo esencial aquí no es que $\vec k$ sea constante, sino que la dirección de $\vec E_0$ permanezca fija. El ojo humano, por sí solo, no percibe directamente la polarización de la luz; detecta principalmente su intensidad.
 
+
 \begin{figure}[ht]
     \centering
     \begingroup
     \shorthandoff{<>}
-    \begin{tikzpicture}[
-        x=1cm,y=1cm,
-        >=Latex,
-        line join=round,
-        line cap=round
-    ]
-
-        % origen
+    \begin{tikzpicture}[scale=0.96,>=Latex,line join=round,line cap=round]
         \coordinate (O) at (0,0);
-
-        % ejes
-        \draw[->] (O) -- (0,3.35) node[above] {$x$};
-        \draw[->] (O) -- (-1.95,-1.45) node[left] {$y$};
-        \draw[->] (O) -- (8.8,0) node[right] {$z$};
-
-        % dirección de propagación
-        \draw[very thick,-{Latex[length=2.8mm]}]
-            (1.30,0.58) -- (8.70,0.58)
-            node[midway, above] {$\vec k$};
-
-        % texto de fase constante
-        \node[align=center] at (4.9,2.8)
-            {frentes de onda\\[2pt]
-            $\vec k\cdot \vec x-\omega t+\varphi_0=\mathrm{cte}$};
-
-        % frentes de onda
-        \foreach \z in {2.1,4.0,5.9,7.8}
+        \draw[eje] (O) -- (0,2.9) node[above] {$\hat e_x$};
+        \draw[eje] (O) -- (-1.70,-1.05) node[left] {$\hat e_y$};
+        \draw[eje] (O) -- (9.55,0) node[right] {$\hat e_z$};
+        \foreach \z/\op in {1.55/0.95,3.30/0.82,5.05/0.68,6.80/0.54,8.55/0.40}
         {
             \begin{scope}[shift={(\z,0)}]
-                \fill[gray!10]
-                    (-0.45,-0.95) --
-                    (-0.45, 0.95) --
-                    ( 0.55, 1.32) --
-                    ( 0.55,-0.58) -- cycle;
-
-                \draw[thick]
-                    (-0.45,-0.95) --
-                    (-0.45, 0.95) --
-                    ( 0.55, 1.32) --
-                    ( 0.55,-0.58) -- cycle;
-
-                % flecha del campo eléctrico sobre cada frente
-                \draw[thick,-{Latex[length=2.4mm]}]
-                    (0.03,-0.02) -- (0.03,0.92);
+                \fill[UdeCAzul!8,opacity=\op] (-0.50,-0.85)--(-0.50,0.95)--(0.58,1.28)--(0.58,-0.52)--cycle;
+                \draw[UdeCAzul!75!black,thick] (-0.50,-0.85)--(-0.50,0.95)--(0.58,1.28)--(0.58,-0.52)--cycle;
             \end{scope}
         }
-
-        % una flecha representativa de E
-        \draw[very thick,-{Latex[length=2.8mm]}]
-            (-0.9,0.2) -- (-0.9,1.95)
-            node[midway,left] {$\vec E$};
-
-        % una flecha representativa de B
-        \draw[very thick,-{Latex[length=2.8mm]}]
-            (1.75,-0.1) -- (0.95,-0.72)
-            node[midway,below left] {$\vec B$};
-
-        % longitud de onda
-        \draw[<->] (2.1,-1.45) -- (4.0,-1.45)
-            node[midway, below] {$\lambda$};
-
+        \draw[vecazul] (0.75,0.47) -- (9.20,0.47)
+            node[midway,above=6pt,fill=white,inner sep=1pt] {$\vec k=k\hat e_z$};
+        \foreach \z in {2.0,4.0,6.0,8.0}
+        {
+            \draw[vecverde] (\z,0) -- (\z,1.00);
+            \node[font=\small,green!45!black,fill=white,inner sep=1pt] at (\z,1.25) {$\E$};
+            \draw[vecdorado] (\z,0) -- ($ (\z,0)+(-0.72,-0.48) $);
+            \node[font=\small,UdeCDorado!85!black,fill=white,inner sep=1pt] at ($ (\z,0)+(-0.88,-0.68) $) {$\B$};
+        }
+        \draw[<->,gray!70!black] (1.55,-1.35) -- (3.30,-1.35) node[midway,below=3pt,fill=white,inner sep=1pt] {$\lambda$};
+        \node[cajadiagrama, text width=5.15cm] at (5.25,3.05)
+        {$\E\perp\B$, $\E\perp\vec k$, $\B\perp\vec k$\\[2pt]
+        $\displaystyle \B=\frac{1}{c}\hat k\times\E$};
     \end{tikzpicture}
     \endgroup
-    \caption{Representación geométrica de una onda plana monocromática que se propaga en la dirección $\vec k\parallel \hat z$. Los frentes de onda son planos de fase constante, y los campos $\vec E$ y $\vec B$ son transversales a la dirección de propagación.}
+    \caption{Onda plana monocromática propagándose en la dirección $\vec k\parallel\hat e_z$. Los frentes de onda son planos perpendiculares a $\vec k$ y los campos son transversales a la propagación.}
+    \label{fig:onda-plana-campos-transversales}
 \end{figure}
+
+
+
 
 \begin{figure}[ht]
     \centering
     \begingroup
     \shorthandoff{<>}
-    \begin{tikzpicture}[
-        x=0.95cm,y=1cm,
-        >=Latex,
-        line join=round,
-        line cap=round
-    ]
-
-        \def\lam{6.4}
-        \def\A{1.35}
-        \def\phi{18}
-        \def\xmax{11.4}
-
-        % ejes
-        \draw[->] (-0.35,0) -- (\xmax+0.55,0) node[right] {$x$};
-        \draw[->] (0,-2.05) -- (0,2.45) node[above] {$E_y$};
-
-        % líneas de amplitud
-        \draw[densely dashed] (0,\A) -- (\xmax,\A);
-        \draw[densely dashed] (0,-\A) -- (\xmax,-\A);
-
-        % perfil sinusoidal
-        \draw[thick, smooth, samples=250, domain=0:\xmax]
-            plot (\x, {\A*sin(360*\x/\lam + \phi)});
-
-        % flechas del campo
-        \foreach \n in {0,...,15}
+    \begin{tikzpicture}[x=0.92cm,y=1cm,>=Latex,line join=round,line cap=round]
+        \def\lam{6.0}
+        \def\A{1.30}
+        \def\xmax{11.2}
+        \draw[eje] (-0.35,0) -- (\xmax+0.75,0) node[right] {$z$};
+        \draw[eje] (0,-2.05) -- (0,3.05) node[above] {$E_x$};
+        \draw[densely dashed,gray!55] (0,\A) -- (\xmax,\A);
+        \draw[densely dashed,gray!55] (0,-\A) -- (\xmax,-\A);
+        \node[left] at (0,\A) {$E_0$};
+        \node[left] at (0,-\A) {$-E_0$};
+        \draw[UdeCAzul!80!black,very thick,smooth,samples=240,domain=0:\xmax]
+            plot (\x,{\A*cos(360*\x/\lam)});
+        \foreach \n in {0,...,16}
         {
-            \pgfmathsetmacro{\xx}{0.45 + 0.67*\n}
-            \pgfmathsetmacro{\Ey}{\A*sin(360*\xx/\lam + \phi)}
-            \draw[thick,-{Latex[length=2.2mm]}] (\xx,0) -- (\xx,\Ey);
+            \pgfmathsetmacro{\xx}{0.35 + 0.64*\n}
+            \pgfmathsetmacro{\Ey}{\A*cos(360*\xx/\lam)}
+            \draw[vecazul] (\xx,0) -- (\xx,\Ey);
         }
-
-        % etiquetas laterales
-        \node[left] at (0,\A) {$\vec E=\vec E_0$};
-        \node[left] at (0,0) {$\vec E=\vec 0$};
-        \node[left] at (0,-\A) {$\vec E=-\vec E_0$};
-
-        % etiqueta temporal
-        \node[fill=white, inner sep=2pt] at (5.7,1.95) {$t=t_0$};
-
-        % texto explicativo fuera de la onda
-        \node[
-            fill=white,
-            inner sep=3pt,
-            align=left,
-            anchor=west
-        ] at (7.95,2.25) {\small en una dirección fija.};
-
-        \node[
-            fill=white,
-            inner sep=3pt,
-            align=left,
-            anchor=west
-        ] at (7.95,2.88) {\small Polarización lineal: $\vec E$ oscila siempre };
-
-        % longitud de onda
-        \draw[
-            decorate,
-            decoration={brace, mirror, amplitude=5pt}
-        ] (0.95,-1.72) -- (7.35,-1.72)
-          node[midway, below=7pt] {$\lambda$};
-
+        \draw[decorate, decoration={brace, mirror, amplitude=5pt}]
+            (0,-1.68) -- (\lam,-1.68) node[midway,below=7pt] {$\lambda$};
+        \node[cajadiagrama, text width=4.85cm] at (8.25,2.72)
+        {polarización lineal:\\la dirección de $\E$ es fija,\\sólo cambia su magnitud y signo};
+        \node[font=\small,fill=white,inner sep=2pt] at (3.0,1.85) {$t=t_0$};
     \end{tikzpicture}
     \endgroup
-    \caption{Instantánea espacial del campo eléctrico de una onda plana linealmente polarizada. Aunque la magnitud del campo cambia con la posición, su dirección permanece fija.}
+    \caption{Instantánea espacial de una onda plana linealmente polarizada. Las flechas muestran que el campo eléctrico oscila sobre una recta fija del plano transversal.}
+    \label{fig:polarizacion-lineal-instantanea}
 \end{figure}
+
+
 
 La onda plana monocromática linealmente polarizada es una idealización útil, pero extrema: ningún sistema físico real produce una onda de esta forma en todo el espacio y durante todo el tiempo. Sin embargo, este modelo describe muy bien, de manera aproximada, la radiación en regiones pequeñas comparadas con la distancia a la fuente, o bien haces suficientemente colimados en zonas donde la curvatura de los frentes de onda puede despreciarse. Además, este tipo de soluciones desempeña un papel central en el análisis de Fourier y en la construcción de soluciones más generales de las ecuaciones de Maxwell.
 
@@ -1054,11 +1008,11 @@ donde $\vec E_{0T}=\vec E_{01}+\vec E_{02}$.
 
 Un ejemplo concreto es considerar las amplitudes de $\vec E_{01}$ y $\vec E_{02}$ dadas por
 \begin{equation*}
-    \vec E_{01}= E_1\,\hat x \, , \qquad \vec E_{02}= E_2\, \hat y \, ,
+    \vec E_{01}= E_1\,\hat e_x \, , \qquad \vec E_{02}= E_2\, \hat e_y \, ,
 \end{equation*}
 entonces la amplitud de la superposición de las ondas será dada por
 \begin{equation*}
-    \vec E_{0T}= E_1\,\hat x + E_2\, \hat y.
+    \vec E_{0T}= E_1\,\hat e_x + E_2\, \hat e_y.
 \end{equation*}
 Así, la magnitud de la amplitud total será
 \begin{equation*}
@@ -1072,8 +1026,8 @@ En este primer caso, como ambas componentes están en fase, la dirección del ca
     \shorthandoff{<>}
     \begin{tikzpicture}[scale=0.98,>=Latex,line join=round,line cap=round]
         \begin{scope}[shift={(0,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[very thick,blue!75!black] (-1.55,-1.05) -- (1.55,1.05);
             \draw[very thick,-{Latex[length=2.6mm]},blue!75!black] (0,0) -- (1.35,0.91)
                 node[midway,above left] {$\vec E_{0T}$};
@@ -1083,29 +1037,29 @@ En este primer caso, como ambas componentes están en fase, la dirección del ca
             \node[left] at (0,0.46) {$E_2$};
         \end{scope}
         \begin{scope}[shift={(5.2,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[very thick,blue!75!black] (-1.55,-1.05) -- (1.55,1.05);
             \node at (0,-2.45) {trayectoria lineal};
         \end{scope}
     \end{tikzpicture}
     \endgroup
-    \caption{Caso en fase. A la izquierda se muestra la suma vectorial de las amplitudes $\vec E_{01}=E_1\hat x$ y $\vec E_{02}=E_2\hat y$, cuya resultante es $\vec E_{0T}$. A la derecha se muestra el lugar geométrico descrito por el extremo del campo eléctrico al fijar la posición y dejar correr el tiempo: una recta en el plano transversal.}
+    \caption{Caso en fase. A la izquierda se muestra la suma vectorial de las amplitudes $\vec E_{01}=E_1\hat e_x$ y $\vec E_{02}=E_2\hat e_y$, cuya resultante es $\vec E_{0T}$. A la derecha se muestra el lugar geométrico descrito por el extremo del campo eléctrico al fijar la posición y dejar correr el tiempo: una recta en el plano transversal.}
 \end{figure}
 
 Segundo caso, las amplitudes de las ondas son iguales pero sus fases difieren en $\pm\,\pi/2$, es decir
 \begin{equation*}
-    \vec E_{01}=E_0\,\hat x,
+    \vec E_{01}=E_0\,\hat e_x,
     \qquad
-    \vec E_{02}=E_0\,\hat y,
+    \vec E_{02}=E_0\,\hat e_y,
     \qquad
     \varphi_2=\varphi_1\pm\frac{\pi}{2}.
 \end{equation*}
 Entonces,
 \begin{align*}
     \vec E &= \operatorname{Re}\left[\vec E_{1,c}\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}+\vec E_{2,c}\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}\right] \\
-    &= \operatorname{Re}\left[\left(E_0\hat x\,\ee^{\ii\varphi_1}\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}+\left(E_0\hat y\,\ee^{\ii\varphi_2}\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}\right] \\
-    &= \operatorname{Re}\left[E_0\hat x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_2\right)}\right].
+    &= \operatorname{Re}\left[\left(E_0\hat e_x\,\ee^{\ii\varphi_1}\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}+\left(E_0\hat e_y\,\ee^{\ii\varphi_2}\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t\right)}\right] \\
+    &= \operatorname{Re}\left[E_0\hat e_x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat e_y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_2\right)}\right].
 \end{align*}
 A partir de aquí conviene separar explícitamente los dos signos.
 
@@ -1113,9 +1067,9 @@ A partir de aquí conviene separar explícitamente los dos signos.
 Se tiene
 \begin{align*}
     \vec E
-    &= \operatorname{Re}\left[E_0\hat x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1+\pi/2\right)}\right] \\
-    &= \operatorname{Re}\left[E_0\left(\hat x+\ii\hat y\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}\right] \\
-    &= E_0\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat x-E_0\sin\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat y.
+    &= \operatorname{Re}\left[E_0\hat e_x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat e_y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1+\pi/2\right)}\right] \\
+    &= \operatorname{Re}\left[E_0\left(\hat e_x+\ii\hat e_y\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}\right] \\
+    &= E_0\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat e_x-E_0\sin\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat e_y.
 \end{align*}
 Luego, fijando la posición en el espacio, las componentes del campo satisfacen
 \begin{equation*}
@@ -1133,9 +1087,9 @@ En consecuencia, el extremo del campo eléctrico describe una circunferencia. Co
 Ahora se tiene
 \begin{align*}
     \vec E
-    &= \operatorname{Re}\left[E_0\hat x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1-\pi/2\right)}\right] \\
-    &= \operatorname{Re}\left[E_0\left(\hat x-\ii\hat y\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}\right] \\
-    &= E_0\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat x+E_0\sin\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat y.
+    &= \operatorname{Re}\left[E_0\hat e_x\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}+E_0\hat e_y\,\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1-\pi/2\right)}\right] \\
+    &= \operatorname{Re}\left[E_0\left(\hat e_x-\ii\hat e_y\right)\ee^{\ii\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)}\right] \\
+    &= E_0\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat e_x+E_0\sin\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat e_y.
 \end{align*}
 Luego,
 \begin{equation*}
@@ -1156,8 +1110,8 @@ El extremo del campo eléctrico vuelve a describir una circunferencia, pero ahor
     \begin{tikzpicture}[scale=1.0,>=Latex,line join=round,line cap=round]
         % panel izquierdo
         \begin{scope}[shift={(0,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[thick] (0,0) circle (1.45);
             \draw[very thick,-{Latex[length=2.4mm]},blue!75!black] (0,0) -- (1.15,0.88);
             \draw[-{Latex[length=2.2mm]},blue!75!black] (0.25,-1.42) arc[start angle=-80,end angle=210,radius=1.42];
@@ -1165,8 +1119,8 @@ El extremo del campo eléctrico vuelve a describir una circunferencia, pero ahor
         \end{scope}
         % panel derecho
         \begin{scope}[shift={(6.0,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[thick] (0,0) circle (1.45);
             \draw[very thick,-{Latex[length=2.4mm]},blue!75!black] (0,0) -- (1.15,-0.88);
             \draw[-{Latex[length=2.2mm]},blue!75!black] (-0.25,-1.42) arc[start angle=-100,end angle=190,radius=1.42];
@@ -1179,15 +1133,15 @@ El extremo del campo eléctrico vuelve a describir una circunferencia, pero ahor
 
 En el caso general, donde las amplitudes y las fases son distintas, la polarización es elíptica. Aquí los ceros de las ondas no necesariamente coinciden. Para ver esto con la notación que ya venimos usando, definamos
 \begin{equation*}
-    \vec E_{01}=E_{01}\,\hat x,
+    \vec E_{01}=E_{01}\,\hat e_x,
     \qquad
-    \vec E_{02}=E_{02}\,\hat y,
+    \vec E_{02}=E_{02}\,\hat e_y,
     \qquad
     \delta=\varphi_2-\varphi_1.
 \end{equation*}
 Entonces la superposición puede escribirse como
 \begin{equation*}
-    \vec E(\vec x,t)=E_{01}\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat x+E_{02}\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1+\delta\right)\hat y.
+    \vec E(\vec x,t)=E_{01}\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1\right)\hat e_x+E_{02}\cos\left(\vec k\cdot\vec x-\omega t+\varphi_1+\delta\right)\hat e_y.
 \end{equation*}
 Si denotamos por $E_x$ y $E_y$ las componentes cartesianas de $\vec E$, se tiene
 \begin{equation*}
@@ -1242,22 +1196,22 @@ Esta es la ecuación de la elipse de polarización. Así, la línea y la circunf
     \begin{tikzpicture}[scale=0.98,>=Latex,line join=round,line cap=round]
         % Linea
         \begin{scope}[shift={(0,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[very thick,blue!75!black] (-1.55,-1.05) -- (1.55,1.05);
             \node at (0,-2.55) {lineal};
         \end{scope}
         % Circulo
         \begin{scope}[shift={(5.2,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[very thick,blue!75!black] (0,0) circle (1.45);
             \node at (0,-2.55) {circular};
         \end{scope}
         % Elipse
         \begin{scope}[shift={(10.4,0)}]
-            \draw[->] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
-            \draw[->] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
+            \draw[-{Latex}] (-2.0,0) -- (2.2,0) node[right] {$E_x$};
+            \draw[-{Latex}] (0,-2.0) -- (0,2.2) node[above] {$E_y$};
             \draw[very thick,blue!75!black,rotate=25] (0,0) ellipse (1.75 and 0.95);
             \node at (0,-2.55) {elíptica};
         \end{scope}
@@ -1470,11 +1424,11 @@ como debe ser. En consecuencia, $\vec E_k(\vec k)$ puede interpretarse como una 
         \coordinate (Kz) at (0,4.4);
         \coordinate (P) at (2.45,1.85);
 
-        \draw[->, thick] (O) -- (Kx) node[below right] {$k_y$};
-        \draw[->, thick] (O) -- (Ky) node[below left] {$k_x$};
-        \draw[->, thick] (O) -- (Kz) node[left] {$k_z$};
+        \draw[-{Latex}, thick] (O) -- (Kx) node[below right] {$k_y$};
+        \draw[-{Latex}, thick] (O) -- (Ky) node[below left] {$k_x$};
+        \draw[-{Latex}, thick] (O) -- (Kz) node[left] {$k_z$};
 
-        \draw[->, very thick] (O) -- (P);
+        \draw[-{Latex}, very thick] (O) -- (P);
         \node[above left=2pt] at (1.35,0.98) {$\vec k$};
 
         \coordinate (A) at (2.35,1.70);
@@ -1643,7 +1597,7 @@ En resumen, para cada modo de la superposición continua de ondas planas monocro
         \end{scope}
 
         % Flecha entre paneles
-        \draw[->,thick] (3.20,1.55) -- (5.00,1.55)
+        \draw[-{Latex},thick] (3.20,1.55) -- (5.00,1.55)
             node[midway,above] {modo seleccionado};
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1852,7 +1806,7 @@ Integrando esta potencia local en el volumen $V$ y entre los tiempos $t_0$ y $t$
 
         \node[right] at (q3) {$d^3x$};
 
-        \draw[->]
+        \draw[-{Latex}]
             (1.55,-1.0)
             .. controls (1.0,-0.95) and (0.45,-0.92) ..
             (0.18,-0.88);
@@ -2426,8 +2380,42 @@ Esta relación expresa que, en una onda plana monocromática en el vacío, el fl
 
 \subsection{Balance local del momentum lineal del campo electromagnético}
 
-Consideremos ahora la \textbf{densidad de fuerza de Lorentz} escrita en notación indicial:
+Antes de comenzar el cálculo, conviene fijar con claridad la notación tensorial que utilizaremos de ahora en adelante. Si
+\begin{equation*}
+    \vec A=A_i\hat e_i,
+    \qquad
+    \vec B=B_j\hat e_j,
+\end{equation*}
+entonces su producto diádico se escribe como
+\begin{equation*}
+    \vec A\vec B=A_iB_j\hat e_i\hat e_j.
+\end{equation*}
+En particular, si
+\begin{equation*}
+   T=T_{ij}\hat e_i\hat e_j,
+\end{equation*}
+
+entonces la acción de este tensor sobre un vector $\vec c=c_k\hat e_k$ queda definida por
+\begin{align*}
+    T\cdot\vec c&=(T_{ij}\hat e_i\hat e_j)\cdot (c_k\hat e_k)\\
+    &=T_{ij}c_k\hat e_i(\hat e_j\cdot \hat e_k)\\
+    &=T_{ij}c_k\hat e_i\delta_{jk} \\
+    &=T_{ij}c_j\hat e_i
+\end{align*}
+La convención de divergencia que adoptaremos es la compatible con esta acción sobre el segundo índice:
+\begin{equation*}
+    (\nabla\cdot T)_i:=\partial_jT_{ij},
+\end{equation*}
+de modo que, en coordenadas cartesianas,
+\begin{equation*}
+    \int_V \nabla\cdot T\,dV=\oint_{\partial V}T\cdot\hat n\,dS.
+\end{equation*}
+Con esta convención, la notación diádica será nuestro lenguaje estándar para expresar el flujo del momentum lineal del campo.
+
+La \textbf{densidad de fuerza de Lorentz} puede escribirse tanto en forma vectorial como indicial:
 \begin{equation}
+    \vec f=\rho\E+\J\times\B,
+    \qquad
     f_i=\rho E_i+\varepsilon_{ijk}J_jB_k.
     \label{eq:momentum-lorentz-density}
 \end{equation}
@@ -2593,7 +2581,12 @@ Definimos ahora la \textbf{densidad volumétrica de momentum lineal del campo el
     \pi_i(\vec x,t):=\varepsilon_0\varepsilon_{ijk}E_jB_k,
     \label{eq:momentum-density-indicial}
 \end{equation}
-y el \textbf{tensor de tensiones de Maxwell}
+y, en notación vectorial,
+\begin{equation}
+    \vec\pi(\vec x,t):=\varepsilon_0\,\E\times\B.
+    \label{eq:momentum-density-diadic}
+\end{equation}
+Análogamente, el \textbf{tensor de tensiones de Maxwell} queda dado en componentes por
 \begin{equation}
     T_{ij}(\vec x,t)
     :=
@@ -2608,6 +2601,22 @@ y el \textbf{tensor de tensiones de Maxwell}
     \right)\delta_{ij}.
     \label{eq:maxwell-stress-tensor}
 \end{equation}
+y en notación diádica escribiremos, de manera estándar,
+\begin{equation}
+    T(\vec x,t)
+    :=
+    \varepsilon_0\,\E\E
+    +
+    \frac{1}{\mu_0}\,\B\B
+    -
+    \left(
+        \frac{\varepsilon_0}{2}\,\E\cdot\E
+        +
+        \frac{1}{2\mu_0}\,\B\cdot\B
+    \right)\hat e_i\hat e_i.
+    \label{eq:maxwell-stress-tensor-diadic}
+\end{equation}
+La última expresión deja en evidencia la estructura física del tensor: una suma de dos productos diádicos, asociados a las direcciones privilegiadas de $\E$ y $\B$, menos una parte isótropa proporcional a la díada unidad $\hat e_i\hat e_i$.
 \begin{figure}[ht]
     \centering
     \begingroup
@@ -2684,7 +2693,7 @@ y el \textbf{tensor de tensiones de Maxwell}
             \node at (2.85,1.85) {$\partial V$};
 
             % Texto inferior
-            \node[align=center,text width=5.6cm] at (0,-2.85)
+            \node[align=center,text width=5.6cm] at (0,-3.85)
             {\textbf{Volumen material y elemento de superficie}\\
             Sobre cada elemento orientado $dS_j=n_j\,dS$ de la frontera,
             el campo transporta momentum lineal.};
@@ -2692,7 +2701,7 @@ y el \textbf{tensor de tensiones de Maxwell}
         \end{scope}
 
         % Flecha de zoom
-        \draw[->,thick] (3.5,0.8) -- (5.2,0.8)
+        \draw[-{Latex},thick] (3.5,0.8) -- (5.2,0.8)
             node[midway,above] {detalle local};
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2729,7 +2738,7 @@ y el \textbf{tensor de tensiones de Maxwell}
             \draw[aux] (F2) -- ($(F2)+(-0.75,-1.05)$);
 
             % Fórmulas
-            \node[align=left,text width=5.3cm] at (1.2,-2.05)
+            \node[align=left,text width=5.3cm] at (1.2,-2.55)
             {
                 \textbf{Interpretación local del tensor:}
                 \begin{equation*}
@@ -2754,11 +2763,17 @@ y el \textbf{tensor de tensiones de Maxwell}
 \end{figure}
 La figura \ref{fig:maxwell-stress-surface-flux} sugiere cómo debe interpretarse el término superficial en la ecuación integral: no como una abstracción puramente algebraica, sino como el flujo del componente \(i\) del momentum lineal del campo a través de cada elemento orientado de la frontera. En este sentido, el tensor \(T_{ij}\) desempeña para el momentum un papel análogo al que desempeña el vector de Poynting para la energía.
 
-Con estas definiciones, \eqref{eq:momentum-balance-precompact} se compacta como
+Con estas definiciones, \eqref{eq:momentum-balance-precompact} se compacta en notación indicial como
 \begin{equation}
     \partial_t\pi_i-\partial_jT_{ij}+f_i=0.
     \label{eq:momentum-local-balance}
 \end{equation}
+y, usando la convención diádica fijada al comienzo de esta subsección, la misma ecuación se escribe como
+\begin{equation}
+    \partial_t\vec\pi-\nabla\cdot T+\vec f=\vec 0.
+    \label{eq:momentum-local-balance-diadic}
+\end{equation}
+Aquí el significado geométrico de cada término es completamente transparente: $\partial_t\vec\pi$ es la variación temporal de la densidad de momentum del campo, $\nabla\cdot T$ es la divergencia del flujo tensorial de momentum y $\vec f$ es la densidad de fuerza ejercida sobre la materia.
 
 En notación vectorial, la densidad de momentum del campo es
 \begin{align}
@@ -2894,11 +2909,419 @@ vemos que ambas comparten la misma arquitectura conceptual:
 
 En el caso energético, la cantidad transportada es la energía electromagnética y el flujo está dado por el vector de Poynting. En el caso mecánico, la cantidad transportada es el momentum lineal del campo y el flujo asociado está codificado en el tensor de tensiones de Maxwell.
 
+\newpage
+
+
 \section{Potenciales electromagnéticos y gauge}
 
-% Aquí conviene insertar, cuando corresponda, el material de clases futuras sobre
-% potencial escalar, potencial vector, transformaciones de gauge, calibre de Coulomb,
-% calibre de Lorenz y ecuaciones para los potenciales.
+En electrostática, el campo eléctrico es conservativo, de modo que puede escribirse en términos de un potencial escalar:
+\begin{equation}\label{3.potencial-electrostatico}
+    \E = -\vec\nabla\phi.
+\end{equation}
+De manera análoga, en magnetostática el campo magnético puede expresarse en términos de un potencial vectorial:
+\begin{equation*}
+    \B = \vec\nabla\times\vec A.
+\end{equation*}
+
+La situación cambia en electrodinámica. Ahora los campos dependen, en general, del tiempo, y en particular el campo eléctrico ya no es necesariamente conservativo. En efecto, la ley de Faraday impone
+\begin{equation*}
+    \vec\nabla\times\E = -\frac{\partial \B}{\partial t},
+\end{equation*}
+por lo que, si $\partial \B/\partial t \neq \vec 0$, el rotor de $\E$ no se anula. Por esta razón, en el régimen dinámico no es posible describir al campo eléctrico únicamente mediante un potencial escalar.
+
+Por otra parte, la ecuación homogénea
+\begin{equation*}
+    \vec\nabla\cdot \B = 0
+\end{equation*}
+garantiza que el campo magnético puede escribirse, al menos localmente, como el rotor de un potencial vectorial:
+\begin{equation*}
+    \B = \vec\nabla\times\vec A.
+\end{equation*}
+Sustituyendo esta expresión en la ley de Faraday, se obtiene
+\begin{align*}
+    \vec\nabla\times\E &= -\frac{\partial}{\partial t}\left(\vec\nabla\times\vec A\right) \\
+    &= -\vec\nabla\times\frac{\partial \vec A}{\partial t}.
+\end{align*}
+Luego,
+\begin{equation*}
+    \vec\nabla\times\left(\E + \frac{\partial \vec A}{\partial t}\right) = \vec 0.
+\end{equation*}
+Como un campo irrotacional puede escribirse como el gradiente de un escalar, concluimos que existe un potencial escalar $\phi(\vec x,t)$ tal que
+\begin{equation*}
+    \E + \frac{\partial \vec A}{\partial t} = -\vec\nabla \phi,
+\end{equation*}
+es decir,
+\begin{equation*}
+    \E = -\vec\nabla \phi - \frac{\partial \vec A}{\partial t}.
+\end{equation*}
+
+Así, en electrodinámica los potenciales ya no se asocian por separado a cada campo del modo en que ocurre en los casos estáticos. El potencial escalar y el potencial vectorial aparecen acoplados en la descripción del campo eléctrico, mientras que el campo magnético sigue determinado por el rotor de $\vec A$.
+
+En consecuencia, si $\E(\vec x,t)$ y $\B(\vec x,t)$ satisfacen las ecuaciones homogéneas de Maxwell, entonces existen potenciales $\phi(\vec x,t)$ y $\vec A(\vec x,t)$ tales que
+\begin{align}
+    \E &= -\vec\nabla \phi - \frac{\partial \vec A}{\partial t}, \label{3.campo-electrico-en-potenciales}\\
+    \B &= \vec\nabla\times\vec A.\label{3.campo-magnetico-en-potenciales}
+\end{align}
+La ventaja de introducir estos potenciales es doble: por una parte, las ecuaciones homogéneas de Maxwell quedan automáticamente satisfechas; por otra, el problema dinámico se traslada a determinar $\phi$ y $\vec A$ a partir de las ecuaciones no homogéneas y de una condición de gauge conveniente.
+
+\subsection*{Comentario físico}
+Desde el punto de vista clásico, los observables locales del campo electromagnético son $\E$ y $\B$. Los potenciales no son directamente observables en este sentido: constituyen una descripción redundante, pero extraordinariamente útil, del campo. Esa redundancia es precisamente lo que da origen a las transformaciones de gauge.
+
+\subsection*{Transformaciones de gauge}
+
+Una vez introducidos los potenciales, surge inmediatamente una pregunta natural: ¿quedan $\phi$ y $\vec A$ determinados de manera única por los campos $\E$ y $\B$? La respuesta es negativa. Existe una familia entera de potenciales que describe exactamente los mismos campos físicos.
+
+Sea $\chi(\vec x,t)$ una función escalar suficientemente regular. Consideremos la transformación
+\begin{align*}
+    \phi &\rightarrow \phi' = \phi + \frac{\partial \chi}{\partial t}, \\
+    \vec A &\rightarrow \vec A' = \vec A - \vec\nabla\chi.
+\end{align*}
+Entonces, el nuevo campo eléctrico es
+\begin{align*}
+    \E' &= -\vec\nabla \phi' - \frac{\partial \vec A'}{\partial t} \\
+    &= -\vec\nabla\left(\phi + \frac{\partial \chi}{\partial t}\right) - \frac{\partial}{\partial t}\left(\vec A - \vec\nabla\chi\right) \\
+    &= -\vec\nabla\phi - \vec\nabla\frac{\partial \chi}{\partial t} - \frac{\partial \vec A}{\partial t} + \frac{\partial}{\partial t}\left(\vec\nabla\chi\right) \\
+    &= -\vec\nabla\phi - \frac{\partial \vec A}{\partial t} \\
+    &= \E,
+\end{align*}
+porque derivadas espaciales y temporales conmutan. Por lo tanto,
+\begin{equation*}
+    \E' = \E.
+\end{equation*}
+De manera análoga,
+\begin{align*}
+    \B' &= \vec\nabla\times\vec A' \\
+    &= \vec\nabla\times\left(\vec A - \vec\nabla\chi\right) \\
+    &= \vec\nabla\times\vec A - \vec\nabla\times\left(\vec\nabla\chi\right) \\
+    &= \vec\nabla\times\vec A \\
+    &= \B,
+\end{align*}
+pues el rotor de un gradiente es identicamente nulo. En consecuencia,
+\begin{equation*}
+    \B' = \B.
+\end{equation*}
+
+La transformación anterior deja inalterados los campos físicos. Esa es la esencia de la invariancia de gauge: distintos pares $(\phi,\vec A)$ pueden representar exactamente la misma configuración electromagnética.
+
+\subsection*{Comentario histórico y conceptual}
+La terminología usual distingue diversas elecciones de gauge, como el gauge de Coulomb o el gauge de Lorenz. Conviene recordar aquí una observación histórica clásica: el \emph{gauge de Lorenz} lleva el nombre de Ludvig Lorenz, no de Hendrik Lorentz. Más importante aún, estas elecciones no cambian la física; solamente redistribuyen la información entre $\phi$ y $\vec A$ de una manera que puede resultar más conveniente para el problema en estudio.
+
+En términos prácticos, elegir un gauge es análogo a fijar una calibración de los potenciales. El contenido físico permanece en $\E$ y $\B$, mientras que los potenciales se ajustan para simplificar la estructura matemática del problema.
+
+\subsection*{Ejemplo: un potencial vectorial puramente radial}
+Consideremos los potenciales
+\begin{equation*}
+    \phi(\vec x,t)=0,
+    \qquad
+    \vec A(\vec x,t)= -\frac{1}{4\pi\varepsilon_0}\frac{qt}{r^2}\hat r.
+\end{equation*}
+Calculemos los campos asociados. Para el campo eléctrico,
+\begin{align*}
+    \E &= -\vec\nabla\phi - \frac{\partial \vec A}{\partial t} \\
+    &= -\vec\nabla(0) - \frac{\partial}{\partial t}\left(-\frac{1}{4\pi\varepsilon_0}\frac{qt}{r^2}\hat r\right) \\
+    &= \frac{1}{4\pi\varepsilon_0}\frac{q}{r^2}\hat r.
+\end{align*}
+Así,
+\begin{equation*}
+    \E = \frac{1}{4\pi\varepsilon_0}\frac{q}{r^2}\hat r.
+\end{equation*}
+Para el campo magnético,
+\begin{align*}
+    \B &= \vec\nabla\times\vec A \\
+    &= -\frac{qt}{4\pi\varepsilon_0}\,\vec\nabla\times\left(\frac{1}{r^2}\hat r\right).
+\end{align*}
+Pero un campo radial puro de la forma $f(r)\hat r$ es irrotacional fuera del origen; en efecto, puede escribirse localmente como gradiente de una función escalar. Por tanto,
+\begin{equation*}
+    \B = \vec 0
+    \qquad (r\neq 0).
+\end{equation*}
+Este ejemplo es instructivo porque muestra que un potencial vectorial no nulo puede coexistir con un campo magnético nulo. La información física no reside en $\vec A$ por sí mismo, sino en sus combinaciones gauge-invariantes, es decir, en los campos.
+
+\subsection*{El mismo campo con otro gauge}
+Consideremos ahora la función
+\begin{equation*}
+    \chi(\vec x,t)=\frac{1}{4\pi\varepsilon_0}\frac{qt}{r}.
+\end{equation*}
+Entonces
+\begin{equation*}
+    \vec\nabla \chi = \frac{1}{4\pi\varepsilon_0}qt\,\vec\nabla\left(\frac{1}{r}\right)
+    = -\frac{1}{4\pi\varepsilon_0}\frac{qt}{r^2}\hat r,
+\end{equation*}
+de modo que
+\begin{equation*}
+    \vec A' = \vec A - \vec\nabla\chi = \vec 0.
+\end{equation*}
+Además,
+\begin{equation*}
+    \phi' = \phi + \frac{\partial \chi}{\partial t}
+    = 0 + \frac{1}{4\pi\varepsilon_0}\frac{q}{r}.
+\end{equation*}
+Es decir, el mismo campo físico puede describirse mediante el par
+\begin{equation*}
+    \phi' = \frac{1}{4\pi\varepsilon_0}\frac{q}{r},
+    \qquad
+    \vec A' = \vec 0,
+\end{equation*}
+que no es otra cosa que la representación electrostática usual del campo de una carga puntual.
+
+Este resultado resume muy bien el sentido físico del gauge: una descripción puede concentrar la información en el potencial vectorial, mientras otra puede concentrarla en el potencial escalar, sin que los campos observables cambien.
+
+\subsection*{Gauge y lagrangiano de una partícula cargada}
+Considere ahora una partícula puntual de masa $m$ y carga $q$ moviéndose en campos electromagnéticos externos $\E(\vec x,t)$ y $\B(\vec x,t)$. Su ecuación de movimiento es la fuerza de Lorentz:
+\begin{equation*}
+    m\frac{d^2\vec x}{dt^2} = q\left(\E(\vec x,t) + \dot{\vec x}\times\B(\vec x,t)\right).
+\end{equation*}
+Un lagrangiano que reproduce esta ecuación es
+\begin{equation*}
+    L(\vec x,\dot{\vec x},t)=\frac{1}{2}m\dot{\vec x}^{\,2}-q\phi(\vec x,t)+q\vec A(\vec x,t)\cdot\dot{\vec x}.
+\end{equation*}
+Bajo una transformación de gauge,
+\begin{align*}
+    L' &= \frac{1}{2}m\dot{\vec x}^{\,2} - q\phi' + q\vec A'\cdot\dot{\vec x} \\
+    &= \frac{1}{2}m\dot{\vec x}^{\,2} - q\left(\phi + \frac{\partial \chi}{\partial t}\right) + q\left(\vec A - \vec\nabla\chi\right)\cdot\dot{\vec x} \\
+    &= \left(\frac{1}{2}m\dot{\vec x}^{\,2}-q\phi+q\vec A\cdot\dot{\vec x}\right) - q\left(\frac{\partial \chi}{\partial t}+\vec\nabla\chi\cdot\dot{\vec x}\right).
+\end{align*}
+Pero la derivada total de $q\chi(\vec x,t)$ a lo largo de la trayectoria es
+\begin{equation*}
+    \frac{d}{dt}\left(q\chi(\vec x,t)\right)
+    = q\left(\frac{\partial \chi}{\partial t}+\vec\nabla\chi\cdot\dot{\vec x}\right).
+\end{equation*}
+Por tanto,
+\begin{equation*}
+    L' = L - \frac{d}{dt}\left(q\chi\right).
+\end{equation*}
+El lagrangiano cambia sólo por una derivada total. En mecánica lagrangiana, eso no altera las ecuaciones de Euler--Lagrange; por consiguiente, la dinámica permanece invariante bajo transformaciones de gauge.
+
+\subsection*{Comentario físico final}
+El papel de los potenciales en la formulación lagrangiana es particularmente ilustrativo. Aunque $\phi$ y $\vec A$ no sean únicos, la ambigüedad asociada al gauge no afecta las ecuaciones de movimiento. Dicho de otro modo: la libertad de gauge no es una arbitrariedad sin contenido, sino una simetría de la descripción. Una misma física puede codificarse mediante distintos potenciales, y esa redundancia queda reflejada tanto en la formulación de Maxwell como en la formulación lagrangiana de la interacción electromagnética.
+
+\subsection{Ecuaciones de Maxwell en términos de los potenciales}
+
+Conviene cerrar esta sección poniendo en una misma línea las dos ideas que acabamos de obtener. En electrodinámica introducimos los potenciales electromagnéticos mediante
+\begin{align}
+    \E &= -\vec\nabla \phi - \frac{\partial \vec A}{\partial t},
+    \label{eq:potenciales-E}\\
+    \B &= \vec\nabla\times\vec A.
+    \label{eq:potenciales-B}
+\end{align}
+Además, con la convención de signos que usaremos en este apunte, una transformación de gauge se escribe como
+\begin{align}
+    \phi &\longrightarrow \phi' = \phi + \frac{\partial \chi}{\partial t},
+    \label{eq:transformacion-gauge-phi}\\
+    \vec A &\longrightarrow \vec A' = \vec A - \vec\nabla\chi,
+    \label{eq:transformacion-gauge-A}
+\end{align}
+donde $\chi=\chi(\vec x,t)$ es un campo escalar suficientemente regular.
+
+\begin{cajaidea}
+\textbf{Idea central.} Las ecuaciones \eqref{eq:potenciales-E} y \eqref{eq:potenciales-B} definen los campos físicos a partir de los potenciales. Las ecuaciones \eqref{eq:transformacion-gauge-phi} y \eqref{eq:transformacion-gauge-A} muestran que los potenciales no son únicos. Lo observable en electrodinámica clásica son los campos $\E$ y $\B$, no el representante particular $(\phi,\vec A)$ escogido para describirlos.
+\end{cajaidea}
+
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}[scale=0.95]
+    \tikzstyle{bloque}=[draw=UdeCAzul, rounded corners=2mm, fill=UdeCGrisClaro, inner sep=6pt, align=center, minimum width=3.25cm, minimum height=1.0cm]
+    \tikzstyle{flecha}=[-{Latex}, thick, color=UdeCAzul]
+
+    \node[bloque] (sources) at (0,0) {fuentes\\$\rho,\,\vec J$};
+    \node[bloque] (pot) at (4.8,0) {potenciales\\$\phi,\,\vec A$};
+    \node[bloque] (fields) at (9.6,0) {campos\\$\E,\,\B$};
+    \node[bloque, fill=UdeCDorado!10, draw=UdeCDorado, minimum width=3.7cm] (gauge) at (4.8,-2.0) {elección de gauge\\Coulomb, Lorenz, etc.};
+
+    \draw[flecha] (sources) -- (pot);
+    \draw[flecha] (pot) -- (fields);
+    \draw[flecha] (gauge) -- (pot);
+    \draw[-{Latex}, thick, color=UdeCDorado] (pot) .. controls (4.8,1.25) and (7.4,1.25) .. node[above,font=\small]{misma física} (fields);
+
+\end{tikzpicture}
+\caption{Lectura operativa de los potenciales: las fuentes determinan los potenciales sólo después de fijar un gauge; los campos físicos se obtienen a partir de los potenciales mediante \eqref{eq:potenciales-E} y \eqref{eq:potenciales-B}.}
+\label{fig:potenciales-gauge-mapa}
+\end{figure}
+
+
+Con esta definición, las ecuaciones homogéneas de Maxwell quedan satisfechas de manera automática. En efecto,
+\begin{equation}
+    \vec\nabla\cdot\B
+    =\vec\nabla\cdot(\vec\nabla\times\vec A)=0,
+    \label{eq:divB-identidad-potencial}
+\end{equation}
+y
+\begin{align}
+    \vec\nabla\times\E
+    &=\vec\nabla\times\left(-\vec\nabla\phi-\frac{\partial\vec A}{\partial t}\right) \\
+    &=-\frac{\partial}{\partial t}(\vec\nabla\times\vec A) \\
+    &=-\frac{\partial\B}{\partial t}.
+    \label{eq:faraday-identidad-potencial}
+\end{align}
+Por tanto, \textbf{el contenido dinámico restante} queda en las ecuaciones no homogéneas de Maxwell.
+
+\subsubsection*{Ley de Gauss}
+
+Partimos de
+\begin{equation*}
+    \vec\nabla\cdot\E=\frac{\rho}{\varepsilon_0}.
+\end{equation*}
+Sustituyendo \eqref{eq:potenciales-E},
+\begin{align}
+    \vec\nabla\cdot\left(-\vec\nabla\phi-\frac{\partial\vec A}{\partial t}\right)
+    &=\frac{\rho}{\varepsilon_0}.
+\end{align}
+Como la divergencia conmuta con la derivada temporal, se obtiene
+\begin{equation}
+    \boxed{
+    \nabla^2\phi+\frac{\partial}{\partial t}\left(\vec\nabla\cdot\vec A\right)
+    =-\frac{\rho}{\varepsilon_0}}
+    \label{eq:gauss-potenciales}
+\end{equation}
+Esta es la primera ecuación diferencial para los potenciales.
+
+\subsubsection*{Ley de Ampère--Maxwell}
+
+Ahora usamos
+\begin{equation*}
+    \vec\nabla\times\B=\mu_0\J+\mu_0\varepsilon_0\frac{\partial\E}{\partial t}.
+\end{equation*}
+Sustituyendo \eqref{eq:potenciales-E} y \eqref{eq:potenciales-B},
+\begin{equation}
+    \vec\nabla\times(\vec\nabla\times\vec A)
+    =\mu_0\J+\frac{1}{c^2}\frac{\partial}{\partial t}
+    \left(-\vec\nabla\phi-\frac{\partial\vec A}{\partial t}\right),
+    \label{eq:ampere-potenciales-inicio}
+\end{equation}
+donde usamos $c^{-2}=\mu_0\varepsilon_0$. Con la identidad vectorial
+\begin{equation*}
+    \vec\nabla\times(\vec\nabla\times\vec A)
+    =\vec\nabla(\vec\nabla\cdot\vec A)-\nabla^2\vec A,
+\end{equation*}
+la ecuación se reordena como
+\begin{equation}
+    \boxed{
+    \nabla^2\vec A-\frac{1}{c^2}\frac{\partial^2\vec A}{\partial t^2}
+    -\vec\nabla\left(\vec\nabla\cdot\vec A+\frac{1}{c^2}\frac{\partial\phi}{\partial t}\right)
+    =-\mu_0\J.}
+    \label{eq:ampere-potenciales}
+\end{equation}
+Las ecuaciones \eqref{eq:gauss-potenciales} y \eqref{eq:ampere-potenciales} son las ecuaciones de Maxwell no homogéneas escritas en términos de los potenciales.
+
+\begin{cajaidea}
+\textbf{Lectura matemática.} Tenemos cuatro incógnitas escalares, una en $\phi$ y tres en $\vec A$, y cuatro ecuaciones escalares provenientes de \eqref{eq:gauss-potenciales} y \eqref{eq:ampere-potenciales}. Sin embargo, los potenciales no quedan determinados de manera única, porque la transformación de gauge \eqref{eq:transformacion-gauge-phi}--\eqref{eq:transformacion-gauge-A} deja invariantes los campos $\E$ y $\B$.
+\end{cajaidea}
+
+\begin{cuidado}
+No debe confundirse ``tener cuatro ecuaciones para cuatro incógnitas'' con tener una solución única. La libertad de gauge dice que, si $(\phi,\vec A)$ describe una configuración física, entonces existen infinitos pares $(\phi',\vec A')$ que describen la misma configuración. Por ello, para resolver de manera efectiva se impone una condición adicional sobre los potenciales: eso es lo que llamamos \textbf{fijar un gauge}.
+\end{cuidado}
+
+\subsection{Elecciones de gauge}
+
+Una elección de gauge es una condición matemática impuesta sobre los potenciales para escoger un representante particular dentro de toda la familia de potenciales físicamente equivalentes. En electrodinámica clásica aparecen dos elecciones especialmente útiles: el \textbf{gauge de Coulomb} y el \textbf{gauge de Lorenz}.
+
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}[scale=0.95]
+    \tikzstyle{caja}=[draw=UdeCAzul, rounded corners=2mm, fill=UdeCGrisClaro, inner sep=7pt, align=center, minimum width=5.2cm, minimum height=1.1cm]
+    \tikzstyle{cajaD}=[draw=UdeCDorado, rounded corners=2mm, fill=UdeCDorado!10, inner sep=7pt, align=center, minimum width=5.2cm, minimum height=1.1cm]
+    \node[caja] (pot) at (0,0) {potenciales\\$(\phi,\vec A)$};
+    \node[caja] (potp) at (7,0) {potenciales transformados\\$(\phi',\vec A')$};
+    \node[cajaD] (EB) at (3.5,-2.1) {mismos campos físicos\\$\E' = \E,\quad \B' = \B$};
+
+    \draw[-{Latex}, thick, color=UdeCAzul] (pot) -- node[above]{$\chi(\vec x,t)$} (potp);
+    \draw[-{Latex}, thick, color=UdeCDorado] (pot) -- (EB);
+    \draw[-{Latex}, thick, color=UdeCDorado] (potp) -- (EB);
+\end{tikzpicture}
+\caption{Una transformación de gauge cambia el representante $(\phi,\vec A)$, pero no cambia los campos físicos.}
+\label{fig:gauge-misma-fisica}
+\end{figure}
+
+\subsubsection*{Gauge de Coulomb}
+
+El gauge de Coulomb se define por
+\begin{equation}
+    \boxed{\vec\nabla\cdot\vec A=0.}
+    \label{eq:gauge-coulomb}
+\end{equation}
+En este caso, la ecuación \eqref{eq:gauss-potenciales} queda
+\begin{equation}
+    \boxed{\nabla^2\phi=-\frac{\rho}{\varepsilon_0}.}
+    \label{eq:poisson-phi-coulomb}
+\end{equation}
+Así, en el gauge de Coulomb el potencial escalar satisface una ecuación de Poisson análoga a la electrostática. Con condiciones de borde adecuadas, su solución puede escribirse como
+\begin{equation}
+    \phi(\vec x,t)=\frac{1}{4\pi\varepsilon_0}
+    \int \frac{\rho(\vec x',t)}{|\vec x-\vec x'|}\,dV'.
+    \label{eq:phi-coulomb-integral}
+\end{equation}
+
+\begin{cajaidea}
+\textbf{Interpretación.} En el gauge de Coulomb, $\phi$ queda determinado instantáneamente por $\rho$. Esto no contradice la causalidad: la información dinámica restante queda codificada en el potencial vectorial $\vec A$ y, finalmente, sólo los campos $\E$ y $\B$ son observables clásicos.
+\end{cajaidea}
+
+\subsubsection*{Gauge de Lorenz}
+
+El gauge de Lorenz se define por
+\begin{equation}
+    \boxed{\vec\nabla\cdot\vec A+\frac{1}{c^2}\frac{\partial\phi}{\partial t}=0.}
+    \label{eq:gauge-lorenz}
+\end{equation}
+Con esta condición, el término entre paréntesis en \eqref{eq:ampere-potenciales} se anula y las ecuaciones para los potenciales se desacoplan en forma de ecuaciones de onda con fuente:
+\begin{align}
+    \nabla^2\phi-\frac{1}{c^2}\frac{\partial^2\phi}{\partial t^2}
+    &=-\frac{\rho}{\varepsilon_0},
+    \label{eq:onda-phi-lorenz}\\
+    \nabla^2\vec A-\frac{1}{c^2}\frac{\partial^2\vec A}{\partial t^2}
+    &=-\mu_0\J.
+    \label{eq:onda-A-lorenz}
+\end{align}
+
+\begin{cuidado}
+El nombre correcto es \textbf{gauge de Lorenz}, por Ludvig Lorenz, y no ``Lorentz''. En muchos textos aparece la confusión porque Hendrik Lorentz también es una figura central de la electrodinámica y la relatividad, pero la condición \eqref{eq:gauge-lorenz} se asocia históricamente a Lorenz.
+\end{cuidado}
+
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}[scale=0.92]
+    \tikzstyle{col}=[draw=UdeCAzul, rounded corners=2mm, fill=UdeCGrisClaro, inner sep=7pt, align=left, text width=6.1cm]
+    \node[col] (coul) at (0,0) {\centering\textbf{Gauge de Coulomb}\\[0.3em]
+    $\vec\nabla\cdot\vec A=0$\\[0.3em]
+    $\nabla^2\phi=-\rho/\varepsilon_0$\\[0.3em]
+    útil cuando se quiere separar con claridad la parte electrostática o longitudinal del problema.};
+    \node[col] (lor) at (7.5,0) {\centering\textbf{Gauge de Lorenz}\\[0.3em]
+    $\vec\nabla\cdot\vec A+c^{-2}\partial_t\phi=0$\\[0.3em]
+    $\nabla^2\phi-c^{-2}\partial_t^2\phi=-\rho/\varepsilon_0$\\
+    $\nabla^2\vec A-c^{-2}\partial_t^2\vec A=-\mu_0\J$\\[0.3em]
+    útil cuando se quiere una forma simétrica y relativista de las ecuaciones.};
+\end{tikzpicture}
+\caption{Comparación operativa entre el gauge de Coulomb y el gauge de Lorenz.}
+\label{fig:coulomb-lorenz}
+\end{figure}
+
+\subsection{Libertad residual y familia de soluciones}
+
+La transformación de gauge puede usarse para llevar un par arbitrario de potenciales a un gauge conveniente. Por ejemplo, para imponer el gauge de Coulomb queremos
+\begin{equation*}
+    \vec\nabla\cdot\vec A'=0.
+\end{equation*}
+Como $\vec A'=\vec A-\vec\nabla\chi$, se obtiene
+\begin{equation}
+    \nabla^2\chi=\vec\nabla\cdot\vec A.
+    \label{eq:poisson-chi-coulomb}
+\end{equation}
+Esta es una ecuación de Poisson para $\chi$. Bajo condiciones de borde apropiadas, siempre puede escogerse una solución que permita alcanzar el gauge de Coulomb.
+
+De manera análoga, para imponer el gauge de Lorenz, partimos de
+\begin{equation*}
+    \vec\nabla\cdot\vec A'+\frac{1}{c^2}\frac{\partial\phi'}{\partial t}=0.
+\end{equation*}
+Usando \eqref{eq:transformacion-gauge-phi} y \eqref{eq:transformacion-gauge-A}, se obtiene una ecuación de onda para $\chi$:
+\begin{equation}
+    \nabla^2\chi-\frac{1}{c^2}\frac{\partial^2\chi}{\partial t^2}
+    =\vec\nabla\cdot\vec A+\frac{1}{c^2}\frac{\partial\phi}{\partial t}.
+    \label{eq:onda-chi-lorenz}
+\end{equation}
+
+\begin{cajaidea}
+\textbf{Resumen.} Fijar un gauge no cambia la física; cambia la forma matemática en que se distribuye la información entre $\phi$ y $\vec A$. En la práctica, uno escoge el gauge que vuelve más transparente el problema: Coulomb para enfatizar la parte electrostática, Lorenz para obtener ecuaciones de onda desacopladas y una forma más cercana a la formulación relativista.
+\end{cajaidea}
+
 
 \section{Electrodinámica en medios materiales}
 
@@ -2917,6 +3340,20 @@ En el caso energético, la cantidad transportada es la energía electromagnétic
 
 
 \appendix
+
+
+\section{Nota breve sobre la palabra gauge}
+\label{ap:gauge-teorias}
+
+La palabra \emph{gauge} suele traducirse como \emph{calibre} o \emph{calibración}. En electrodinámica clásica aparece porque los potenciales $(\phi,\vec A)$ contienen más información matemática que los campos físicos $(\E,\B)$. Por eso podemos cambiar los potenciales mediante una función $\chi(\vec x,t)$ sin modificar los campos observables.
+
+Matemáticamente, las transformaciones de gauge electromagnéticas forman un grupo abeliano: si se realizan dos transformaciones sucesivas generadas por $\chi_1$ y $\chi_2$, el resultado equivale a una transformación generada por $\chi_1+\chi_2$. La transformación identidad corresponde a $\chi=0$, y la inversa de una transformación generada por $\chi$ es la generada por $-\chi$.
+
+Desde el punto de vista físico, esta libertad expresa una redundancia de la descripción. En electrodinámica clásica, dicha redundancia no cambia $\E$ ni $\B$. En teorías más avanzadas, como la electrodinámica cuántica o la cromodinámica cuántica, la palabra gauge adquiere un papel aún más profundo: las interacciones se organizan a partir de simetrías locales. En QED el grupo relevante es abeliano, mientras que en QCD el grupo de gauge es no abeliano. No necesitaremos esta estructura aquí, pero es útil recordar que la noción de gauge no es un accidente de notación: es una de las formas centrales en que la física moderna organiza las interacciones.
+
+\begin{cajaidea}
+\textbf{Para este curso.} En electrodinámica clásica basta recordar que un gauge es una elección conveniente de potenciales dentro de una familia de potenciales físicamente equivalentes. Las ecuaciones para $\E$ y $\B$ no cambian; cambia la forma en que resolvemos el problema.
+\end{cajaidea}
 
 \section{Conexión útil con el apunte de óptica ondulatoria}
 \label{ap:optica-ondulatoria}
@@ -2970,14 +3407,14 @@ Esta interpretación coincide con la usada en el caso electromagnético: el vect
 En síntesis, de ese apunte interesa retener la ecuación de onda escalar como modelo de propagación, el principio de superposición, la forma armónica de las ondas monocromáticas, la representación compleja, la reducción a Helmholtz y la interpretación geométrica de los frentes de onda. La polarización, en cambio, exige volver al carácter vectorial de $\E$ y $\B$.
 
 
-\section{Comentario matemático sobre $L^2$, ortogonalidad y Fourier}
+\section[Comentario matemático sobre L2, ortogonalidad y Fourier]{Comentario matemático sobre $L^2$, ortogonalidad y Fourier}
 \label{ap:l2-fourier}
 
 En la subsección sobre superposición general de ondas planas monocromáticas se utilizó la transformada de Fourier espacial para descomponer el campo en modos elementales. Conviene dejar aquí una breve justificación matemática de ese procedimiento.
 
 Una forma natural de idealizar un campo físico regular consiste en suponer que, para cada instante $t$ fijo, sus componentes espaciales son funciones cuadrado integrables. Es decir, si
 \begin{equation*}
-    \vec E(\vec x,t)=E^1(\vec x,t)\,\hat x+E^2(\vec x,t)\,\hat y+E^3(\vec x,t)\,\hat z,
+    \vec E(\vec x,t)=E^1(\vec x,t)\,\hat e_x+E^2(\vec x,t)\,\hat e_y+E^3(\vec x,t)\,\hat e_z,
 \end{equation*}
 se supone que
 \begin{equation*}
